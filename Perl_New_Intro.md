@@ -243,10 +243,23 @@ say $mixed[$#mixed];       # last element, prints 1.23
 You might be tempted to use `$#array + 1` to tell you how many items there are in an array. Don't bother. As it happens, using `@array` where Perl expects to find a scalar value ("in scalar context") will give you the number of elements in the array:
 
 ```perl
-if (@animals < 5) { ... }
+if (@animals < 5) {
+	...
+}
 ```
 
 The elements we're getting from the array start with a `$` because we're getting just a single value out of the array; you ask for a scalar, you get a scalar.
+
+You can do various useful things to lists:
+
+```perl
+my @sorted    = sort @animals;
+my @backwards = reverse @numbers;
+```
+
+ There are a couple of special arrays too, such as `@ARGV` (the command line arguments to your script) and `@_` (the arguments passed to a subroutine). These are documented in [perlvar](https://perldoc.perl.org/perlvar).
+
+#### Array slices
 
 To get multiple values from an array:
 
@@ -257,15 +270,6 @@ To get multiple values from an array:
 ```
 
 This is called an "array slice".
-
-You can do various useful things to lists:
-
-```perl
-my @sorted    = sort @animals;
-my @backwards = reverse @numbers;
-```
-
- There are a couple of special arrays too, such as `@ARGV` (the command line arguments to your script) and `@_` (the arguments passed to a subroutine). These are documented in [perlvar](https://perldoc.perl.org/perlvar).
 
 ### Hashes
 
@@ -309,6 +313,22 @@ while (my ($index, $value) = each @array) {
 ```
 
 Hashes have no particular internal order, though you can sort the keys and loop through them. Just like special scalars and arrays, there are also special hashes. The most well known of these is `%ENV` which contains environment variables. Read all about it (and other special variables) in [perlvar](https://perldoc.perl.org/perlvar).
+
+#### Hash slices
+
+The [`%foo{'bar', 'baz'}` syntax](https://perldoc.perl.org/perl5200delta#New-slice-syntax) enables you to [slice a subset of a hash](https://perldoc.perl.org/perldata#Key%2FValue-Hash-Slices) with its keys and values intact. Very helpful for cherry-picking or aggregating many hashes into one. For example:
+
+```perl
+my %args = (
+    verbose => 1,
+    name    => 'Mark',
+    extra   => 'pizza',
+);
+# don't frob the pizza
+$my_object->frob( %args{ qw(verbose name) };
+```
+
+
 
 Scalars, arrays and hashes are documented more fully in [perldata](https://perldoc.perl.org/perldata).
 
@@ -389,19 +409,53 @@ Perl has most of the usual conditional and looping constructs. As of Perl 5.10, 
 
 The conditions can be any Perl expression. See the list of operators  in the next section for information on comparison and boolean logic  operators, which are commonly used in conditional statements.
 
-- if
+### if
 
   `if ( condition ) {    ... } elsif ( other condition ) {    ... } else {    ... }` There's also a negated version of it: `unless ( condition ) {    ... }` This is provided as a more readable version of `if (!*condition*)`. Note that the braces are required in Perl, even if you've only got  one line in the block. However, there is a clever way of making your  one-line conditional blocks more English like: `# the traditional way if ($zippy) {    say "Yow!"; } # the Perlish post-condition way say "Yow!" if $zippy; say "We have no bananas" unless $bananas;`
 
-- while
+### given
+
+Starting from Perl 5.10.1 (well, 5.10.0, but it didn't work right), you can use an experimental switch feature. This is loosely based on an old version of a Raku proposal, but it no longer resembles the Raku construct. You also get the switch feature whenever you declare that your code prefers to run under a version of Perl that is 5.10 or later. The keywords given and when are analogous to switch and case in other languages -- though continue is not -- so the code in the previous section could be rewritten as
+
+```perl
+for ($var) {
+    when (/^abc/) { $abc = 1 }
+    when (/^def/) { $def = 1 }
+    when (/^xyz/) { $xyz = 1 }
+    default       { $nothing = 1 }
+}
+```
+
+The foreach is the non-experimental way to set a topicalizer. If you wish to use the highly experimental given, that could be written like this:
+
+```perl
+given ($var) {
+    when (/^abc/) { $abc = 1 }
+    when (/^def/) { $def = 1 }
+    when (/^xyz/) { $xyz = 1 }
+    default       { $nothing = 1 }
+}
+```
+
+You can use the [experimental switch feature](https://perldoc.perl.org/perlsyn#Switch-Statements)’s `when` keyword as a postfix modifier also. For example:
+
+```perl
+for ($foo) {
+    $a =  1 when /^abc/;
+    $a = 42 when /^dna/;
+    ...
+}
+```
+
+### while
 
   `while ( condition ) {    ... }` There's also a negated version, for the same reason we have `unless`: `until ( condition ) {    ... }` You can also use `while` in a post-condition: `print "LA LA LA\n" while 1;          # loops forever`
 
-- for
+### for
 
   Exactly like C: `for ($i = 0; $i <= $max; $i++) {    ... }` The C style for loop is rarely needed in Perl since Perl provides the more friendly list scanning `foreach` loop.
 
-- foreach
+### foreach
 
   `foreach (@array) {    print "This element is $_\n"; } say $list[$_] foreach 0 .. $max; # you don't have to use the default $_ either... foreach my $key (keys %hash) {    print "The value of $key is $hash{$key}\n"; }` The `foreach` keyword is actually a synonym for the `for` keyword. See `"Foreach Loops" in perlsyn`.
 
@@ -614,3 +668,5 @@ Here, the body of the `catch` block (i.e. the `warn` statement) will be executed
 OO Perl is relatively simple and is implemented using references  which know what sort of object they are based on Perl's concept of  packages. However, OO Perl is largely beyond the scope of this document. Read [perlootut](https://perldoc.perl.org/perlootut) and [perlobj](https://perldoc.perl.org/perlobj).
 
 As a beginning Perl programmer, your most common use of OO Perl will  be in using third-party modules, which are documented below.
+
+\# TODO continue from Simple class inheritance with `use parent`
