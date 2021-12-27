@@ -669,4 +669,14 @@ OO Perl is relatively simple and is implemented using references  which know wha
 
 As a beginning Perl programmer, your most common use of OO Perl will  be in using third-party modules, which are documented below.
 
+Simple class inheritance with use parent
+Sometimes in older object-oriented Perl code, you’ll see use base as a pragma to establish inheritance from another class. Older still is the direct manipulation of the package’s special @ISA array. In most cases, both should be avoided in favor of use parent, which was added to core in Perl v5.10.1.
+
+Test for class membership with the isa operator
+As an alternative to the isa() method provided to all Perl objects, Perl v5.32 introduced the experimental isa infix operator:
+
+$my_object->isa('Local::MyClass')
+# or
+$my_object isa Local::MyClass
+
 \# TODO continue from Simple class inheritance with `use parent`
