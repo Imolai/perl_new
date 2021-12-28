@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-package New::Perl 2022;
+package NewPerl 2022;
 
 use feature ':5.32';
 use utf8;

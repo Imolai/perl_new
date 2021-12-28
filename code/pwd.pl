@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-use New::Perl;
+use NewPerl;
 use Cwd;
 
 say getcwd;

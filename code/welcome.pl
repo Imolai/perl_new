@@ -1,4 +1,4 @@
 #!/usr/bin/perl
-use New::Perl;
+use NewPerl;
 
 say 'Welcome to the New Perl.';
