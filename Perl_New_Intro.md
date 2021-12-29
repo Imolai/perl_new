@@ -1,7 +1,8 @@
 # Perl New Intro
 
-Or the new, modern Perl (7) in 2022
+For the new, modern Perl (7) in 2022
 
+Or the Misunderstood Perl, the language everyone thinks they know, although doesn't really know nearly enough about it to be competent.
 
 
 ## Reason to being
