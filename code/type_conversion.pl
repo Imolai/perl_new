@@ -2,6 +2,16 @@
 use NewPerl;
 use Scalar::Util qw(looks_like_number);
 
+my $a = 100;
+my $b = 7;
+
+say $a + $b;
+say $a . $b;
+say $a * $b;
+say $a x $b;
+say $a > $b ? 'true' : 'false';
+say $a gt $b ? 'true' : 'false';
+
 my $x = "4T";
 my $y = 3;
 
