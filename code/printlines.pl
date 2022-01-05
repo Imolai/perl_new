@@ -2,7 +2,8 @@
 use NewPerl;
 
 my $filename = "welcome.pl";
-open my ($f), '<', $filename;
-my @lines = <$f>;
-close $f;
-print @lines;
+my $fh       = IO::File->new($filename, 'r');
+if (defined $fh) {
+    my @lines = $fh->getlines;
+    undef $fh;
+    print @lines; }
