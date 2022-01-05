@@ -116,16 +116,17 @@ Alternatively, put this as the first line of your script:
 Perl by default is very forgiving. In order to make it more robust it is recommended to start every program with the following lines:
 
 ```perl
-#!/usr/bin/perl
-use v5.32;  # OR use feature ':5.32';
+#!/usr/bin/env perl
+use feature ':5.32';
 use utf8;
 use warnings;
 use open qw(:std :utf8);
 no feature qw(indirect);
 use feature qw(signatures);
 no warnings qw(experimental::signatures);
-
-use autodie qw(:all);   # Recommended more: defaults and system/exec.
+use autodie qw(:all);
+use IO::File   ();
+use IO::Handle ();
 ```
 
 ## Basic syntax overview
