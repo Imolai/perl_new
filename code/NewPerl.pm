@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 package NewPerl 2022;
 
 use feature ':5.32';
