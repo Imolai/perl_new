@@ -14,13 +14,13 @@ use IO::Handle ();
 
 sub import {
     my ($class, $date) = @_;
-    warnings->import;
     feature->import(':5.32');
+    warnings->import;
 }
  
 sub unimport {
-    warnings->unimport;
     feature->unimport;
+    warnings->unimport;
 }
 
 1;

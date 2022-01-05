@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 use NewPerl;
 use Scalar::Util qw(looks_like_number);
 
