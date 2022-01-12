@@ -129,6 +129,34 @@ use IO::File   ();
 use IO::Handle ();
 ```
 
+### Feature bundles
+
+You can enable individual features based on the Perl version that introduced them. For example, the following:
+
+```perl
+use feature ':5.34';
+```
+
+loads you the following features:
+
+```perl
+use feature qw(bareword_filehandles bitwise current_sub evalbytes fc indirect multidimensional postderef_qq say state switch unicode_eval unicode_strings);
+```
+
+The corresponding bundle also gets implicitly loaded if you specify a minimum required Perl version, e.g., with use v5.32;.
+
+If you use v5.12; or higher, **strict mode** is enabled for free. So just say:
+
+```perl
+use v5.34;
+```
+
+And lastly, one-liners can use the **`-E`** switch instead of `-e` to enable all features for that version of Perl, so you can say the following on the command line:
+
+```bash
+perl -E 'say "Hello world!"'
+```
+
 ## Basic syntax overview
 
 A Perl script or program consists of one or more statements. These  statements are simply written in the script in a straightforward  fashion. There is no need to have a `main()` function or anything of that kind.
@@ -513,6 +541,15 @@ Perl operators are documented in full in [perlop](https://perldoc.perl.org/perlo
 
   `&&  and ||  or !   not` (`and`, `or` and `not` aren't just  in the above table as descriptions of the operators. They're also  supported as operators in their own right. They're more readable than  the C-style operators, but have different precedence to `&&` and friends. Check [perlop](https://perldoc.perl.org/perlop) for more detail.)
 
+### More readable chained comparisons
+
+When I learned math in school, my teachers and textbooks would often describe multiple comparisons and inequalities as a single expression. Unfortunately, when it came time to learn programming every computer language I saw required them to be broken up with a series of and (or &&) operators. With Perl v5.32, this is no more:
+
+```perl
+if ( $x < $y && $y <= $z ) { ... }  # old way
+if ( $x < $y <= $z )       { ... }  # new way
+```
+
 - Miscellaneous
 
   `=   assignment .   string concatenation x   string multiplication (repeats strings) ..  range operator (creates a list of numbers or strings)`
@@ -606,6 +643,23 @@ Perl's regular expression support is both broad and deep, and is the subject of 
 
   Perl regexps also support backreferences, lookaheads, and all kinds of other complex details. Read all about them in [perlrequick](https://perldoc.perl.org/perlrequick), [perlretut](https://perldoc.perl.org/perlretut), and [perlre](https://perldoc.perl.org/perlre).
 
+### Set default regexp flags with the re pragma
+Beginning with Perl v5.14, writing use re '/xms'; (or any combination of regular expression modifier flags) will turn on those flags until the end of that lexical scope, saving you the trouble of remembering them every time.
+
+### Non-destructive substitution with s///r and tr///r
+The s/// substitution and tr/// transliteration operators typically change their input directly, often in conjunction with the =~ binding operator:
+
+```perl
+s/foo/bar/;  # changes the first foo to bar in $_
+$baz =~ s/foo/bar/;  # the same but in $baz
+```
+
+But what if you want to leave the original untouched, such as when processing an array of strings with a map? With Perl v5.14 and above, add the /r flag, which makes the substitution on a copy and returns the result:
+
+```perl
+my @changed = map { s/foo/bar/r } @original;
+```
+
 ## Functions, subroutines
 
 Writing functions or subroutines is easy:
@@ -632,6 +686,20 @@ We can manipulate `@_` in other ways too:
 my ($logmessage, $priority) = @_;       # common
 my $logmessage = $_[0];                 # uncommon, and ugly
 ```
+
+The experimental signatures feature, allows parameters to be introduced right when you declare the subroutine. It looks like this:
+
+```perl
+use experimental 'signatures';
+
+sub foo ($parameter1, $parameter2 = 1, @rest) {
+    say "You passed me $parameter1 and $parameter2";
+    say "And these:";
+    say for @rest;
+}
+```
+
+You can even set defaults for optional parameters, as seen above with the = sign, or slurp up remaining parameters into an array, like the @rest array above. For more helpful uses of this feature, consult the `perlsub` manual page.
 
 Subroutines can also return values:
 
@@ -709,4 +777,5 @@ $my_object->isa('Local::MyClass')
 # or
 $my_object isa Local::MyClass
 
-\# TODO continue from Simple class inheritance with `use parent`
+## Simple class inheritance with use parent
+Sometimes in older object-oriented Perl code, you’ll see use base as a pragma to establish inheritance from another class. Older still is the direct manipulation of the package’s special @ISA array. In most cases, both should be avoided in favor of use parent, which was added to core in Perl v5.10.1.
