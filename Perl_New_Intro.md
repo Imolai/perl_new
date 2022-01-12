@@ -17,9 +17,9 @@ This document is not a new one, I simply copy-pasted the newest and most importa
 
 
 
-## Perl 7 is going to be Perl 5.32, mostly
+## Perl 7 is going to be Perl ~5.32, mostly
 
-Perl 7.0 is going to be v5.32 but with different, saner, more modern defaults.
+Perl 7.0 is going to be v5.32 (or v5.34) but with different, saner, more modern defaults.
 
 ## What is Perl?
 
@@ -213,7 +213,7 @@ print "The animal is $animal\n";
 print "The square of $answer is ", $answer * $answer, "\n";
 ```
 
-There are a number of "magic" scalars with names that look like  punctuation or line noise. These special variables are used for all  kinds of purposes, and are documented in [perlvar](https://perldoc.perl.org/perlvar). The only one you need to know about for now is `$_` which is the "default variable". It's used as the default argument to a number of functions in Perl, and it's set implicitly by certain looping constructs. 
+There are a number of "magic" scalars with names that look like  punctuation or line noise. These special variables are used for all  kinds of purposes, and are documented in [perlvar](https://perldoc.perl.org/perlvar). The only one you need to know about for now is `$_` which is the "default variable". It's used as the default argument to a number of functions in Perl, and it's set implicitly by certain looping constructs.
 
 ```perl
 say;          # prints contents of $_ by default
@@ -268,7 +268,7 @@ To get multiple values from an array:
 ```perl
 @animals[0,1];                 # gives ("camel", "llama");
 @animals[0..2];                # gives ("camel", "llama", "owl");
-@animals[1..$#animals];        # gives all except the first element` 
+@animals[1..$#animals];        # gives all except the first element`
 ```
 
 This is called an "array slice".
@@ -413,7 +413,35 @@ The conditions can be any Perl expression. See the list of operators  in the nex
 
 ### if
 
-  `if ( condition ) {    ... } elsif ( other condition ) {    ... } else {    ... }` There's also a negated version of it: `unless ( condition ) {    ... }` This is provided as a more readable version of `if (!*condition*)`. Note that the braces are required in Perl, even if you've only got  one line in the block. However, there is a clever way of making your  one-line conditional blocks more English like: `# the traditional way if ($zippy) {    say "Yow!"; } # the Perlish post-condition way say "Yow!" if $zippy; say "We have no bananas" unless $bananas;`
+```perl
+if ( condition ) {
+  ...
+} elsif ( other condition ) {
+  ...
+} else {
+  ...
+}
+```
+
+There's also a negated version of it:
+
+```perl
+unless ( condition ) {
+  ...
+}
+```
+
+This is provided as a more readable version of `if (!*condition*)`. Note that the braces are required in Perl, even if you've only got  one line in the block. However, there is a clever way of making your  one-line conditional blocks more English like:
+
+```perl
+# the traditional way
+if ($zippy) {
+  say "Yow!";
+}
+# the Perlish post-condition way
+say "Yow!" if $zippy;
+say "We have no bananas" unless $bananas;
+```
 
 ### given
 
@@ -647,7 +675,7 @@ To learn how to use a particular module, use `perldoc *Module::Name*`. Typically
 
 If you feel the urge to write Perl modules, [perlnewmod](https://perldoc.perl.org/perlnewmod) will give you good advice.
 
-## Try Catch Exception Handling  
+## Try Catch Exception Handling
 
 [This year’s Perl v5.34 release](https://www.nntp.perl.org/group/perl.perl5.porters/2021/05/msg260110.html) introduced [experimental `try`/`catch` syntax](https://perldoc.perl.org/perlsyn#Try-Catch-Exception-Handling) for exception handling. The `try`/`catch` syntax provides control flow relating to exception handling. The `try` keyword introduces a block which will be executed when it is encountered, and the `catch` block provides code to handle any exception that may be thrown by the first.
 
