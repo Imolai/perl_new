@@ -1,6 +1,5 @@
 #!/usr/bin/env perl
 use NewPerl;
-use English;
 
 foreach my $dir (split(/:/, $ENV{'PATH'})) {
     if (opendir(DIR, $dir)) {
