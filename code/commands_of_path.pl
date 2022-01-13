@@ -1,9 +1,11 @@
 #!/usr/bin/env perl
-use NewPerl;
+use CurrentPerl;
 
-foreach my $dir (split(/:/, $ENV{'PATH'})) {
-    if (opendir(DIR, $dir)) {
-        grep {!/^\./ && print "$_\n" } readdir(DIR);
-        closedir DIR;
+foreach my $dir (split /:/, $ENV{'PATH'}) {
+    if (opendir my $dh, $dir) {
+        grep {!/^[.]/ && print "$_\n"} readdir $dh;
+        closedir $dh;
     } else {
-        warn "Can't open dir $dir: $OS_ERROR\n"; } }
+        warn "Can't open dir $dir: $OS_ERROR\n";
+    }
+}

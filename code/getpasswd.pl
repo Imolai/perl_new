@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-use NewPerl;
+use CurrentPerl;
 use Term::ReadPassword qw(read_password);
 
 print 'Username: ';
